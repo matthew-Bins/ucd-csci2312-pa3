@@ -63,8 +63,52 @@ namespace Clustering {
 	}
 
 	void KMeans::run() {
+		/*for (int i = 0; i < __k; ++i)
+			assert(__initCentroids[i]->getValue(i) == NULL);*/
+
+		int moves = 100, iter = 0, closest = NULL;
+		double d1, d2, Final;
+
+		for (int i = 1; i < __k; ++i) {
+			Cluster::Move move(*(__initCentroids[i]), *(__clusters[0]), *(__clusters[i]));
+			move.perform();
+		}
+
+		while (moves > 0 && iter < __maxIter) {
+			moves = 0;
+			for (int i = 0; i < __k; ++i) {//for whole system
+				for (int c = 0; c < __clusters[i]->getSize(); ++c) {
+					d1 = (*__clusters[i])[c].distanceTo(__clusters[i]->centroid.get());
+
+					for (int c2 = 1; c2 < __k; ++c2) {
+						d2 = (*__clusters[i])[c].distanceTo(__clusters[c2]->centroid.get());
+						if (d1 > d2) {
+							closest = i;
+							Final = d2;
+						}
+					}
+					if (closest != NULL) {
+						Cluster::Move move((*(__clusters[i]))[c], *(__clusters[i]), *(__clusters[closest]));
+						move.perform();
+						++moves;
+					}
+
+				}
+			}
+
+			for (int i = 0; i < __k; ++i)
+					__clusters[i]->centroid.compute();
+			++iter;
+		}
+
+		__numNonempty = 0;
 		for (int i = 0; i < __k; ++i)
-			assert(__initCentroids[i]->getValue(i) == NULL);
-	}
+			if (__clusters[i]->getSize() > 0)
+				++__numNonempty;
+
+		__numMovesLastIter = moves;
+		__numIter = iter;
+
+	}//end of run
 
 }

@@ -338,7 +338,7 @@ namespace Clustering {
 	//////////////////////////////////////////////////////////////////////////////////////
 	Cluster::Centroid::Centroid(unsigned int d, const Cluster &c) :
 		__dimensions(d), __c(c), __p(d) {
-		___valid = false; //change before turning in delete  one '_'
+		__valid = false; //change before turning in delete  one '_'
 		if (__c.getSize() == 0)
 			toInfinity();
 	}
@@ -347,11 +347,11 @@ namespace Clustering {
 
 	void Cluster::Centroid::set(const Point& p) {
 		__p = p;
-		___valid = true; //change before turning in delete  one '_'
+		__valid = true; //change before turning in delete  one '_'
 	}
 
-	bool Cluster::Centroid::isValid() const { return ___valid; } // change valid
-	void Cluster::Centroid::setValid(bool valid) { ___valid = valid; } //change valid
+	bool Cluster::Centroid::isValid() const { return __valid; } // change valid
+	void Cluster::Centroid::setValid(bool valid) { __valid = valid; } //change valid
 
 	void Cluster::Centroid::compute() {
 		int size = __c.getSize(), dim = __dimensions;
