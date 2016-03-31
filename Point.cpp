@@ -163,8 +163,8 @@ namespace Clustering {
 			throw DimensionalityMismatchEx(one.getDims(), two.getDims());
 
 		for (int i = 0; i < one.getDims(); ++i)
-			if (one.getValue(i) < two.getValue(i))
-				return true;
+			if (one.getValue(i) != two.getValue(i))
+				return (one.getValue(i) < two.getValue(i));
 
 		return false;
 	}
